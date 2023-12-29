@@ -1,120 +1,81 @@
-Financial Analysis in Python
-============================
+selenium-cucumber-java
+=================
 
-Tutorial at PyData Boston 2013 July 27, 2013 at 4:30 pm.
-http://pydata.org/bos2013/schedule/
+selenium-cucumber : Automation Testing Using Java
 
-You can view the video of the talk [here](https://vimeo.com/73875233).
+selenium-cucumber is a behavior driven development (BDD) approach to write automation test script to test Web.
+It enables you to write and execute automated acceptance/unit tests.
+It is cross-platform, open source and free.
+Automate your test cases with minimal coding.
+[More Details](http://seleniumcucumber.info/)
 
-*Thomas Wiecki, Quantopian Inc. and Brown University*
+Documentation
+-------------
+* [Installation](doc/installation.md)
+* [Predefined steps](doc/canned_steps.md)
 
-Thomas Wiecki is a Quantitative
-Researcher at [Quantopian Inc](https://www.quantopian.com) -- a Boston
-based startup providing you with the first browser based algorithmic
-trading platform -- and a PhD student at Brown University where he
-studies Computational Cognitive Neuroscience. He specializes in
-Bayesian Inference, Machine Learning, Scientific Computing in Python,
-algorithmic trading and Computational Psychiatry.
+Download a Framework
+--------------
+* Maven - https://github.com/selenium-cucumber/selenium-cucumber-java-maven-example
 
-Description
------------
+Writing a test
+--------------
 
-This tutorial will provide hands-on experience of various data
-analysis tools relevant for financial analysis in Python. We will
-first see how financial data can be imported from various sources such
-as Yahoo! finance. Pandas, Matplotlib and statsmodels can be used for
-basic and more advanced time-series analysis. While rudimentary
-backtesting of investment strategies on historical data can be carried
-out using Pandas, a more realistic simulation that considers
-transaction costs, slippage and avoids look-ahead bias, introduces
-various complexities. We will then see how Zipline, an open-source
-streaming-based financial simulator written in Python, can make
-realistic backtesting much easier. After going through some simple
-example algorithms we will see how statistical Python libraries like
-scikits.learn can easily be incorporated with Zipline to build
-state-of-the art trading algorithms. Finally, I will briefly show how
-the same algorithm code can be run with minimal code changes on
-Quantopian -- a free, browser-based platform for developing
-algorithmic trading models.
+The cucumber features goes in the `features` library and should have the ".feature" extension.
 
-The target audience for the tutorial includes all new Python users,
-though we recommend that users also attend the NumPy and IPython
-session in the introductory track.
+You can start out by looking at `features/my_first.feature`. You can extend this feature or make your own features using some of the [predefined steps](doc/canned_steps.md) that comes with selenium-cucumber.
 
-What you will learn
--------------------
 
-* Timeseries analysis using Pandas
-* Using Google Trends to predict market movements
-* Build your own trading strategies using Zipline
-* Common trading strategies:
-   * Momentum trading
-   * Mean-reversion
+Predefined steps
+-----------------
+By using predefined steps you can automate your test cases more quickly, more efficiently and without much coding.
 
-Student Instructions
---------------------
+The predefined steps are located [here](doc/canned_steps.md)
 
-For students familiar with Git, you may simply clone this repository
-to obtain all the materials (IPython notebooks and data) for the
-tutorial. Alternatively, you may [download a zip
-file](https://github.com/twiecki/financial-analysis-python-tutorial/archive/master.zip)
-containing the materials. A third option is to simply view static
-notebooks by clicking on the titles of each section below.
+Running test
+--------------
 
-I strongly encourage you to set up the environment on your own
-computer so that you can follow along during the tutorial.
+Go to your project directory from terminal and hit following commands
+* `mvn test (defualt will run on local firefox browser)`
+* `mvn test "-Dbrowser=chrome" (to use any other browser)`
+* `mvn test "-Dcloud_config=saucelab_windows_chrome52" (to run test on cloud test platforms)`
 
-After you have the materials, from a command shell cd into the financial-analysis-in-python-tutorial directory and execute:
+Using canned tests in your project
+----------------------------------
+
+In your TestRunner class add a glue option:
+
 ```
-ipython notebook --pylab=inline
+package stepDefintions;
+
+import org.junit.runner.RunWith;
+
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+	plugin = {"html:target/cucumberHtmlReport"},
+	features = "classpath:features",
+	glue = {"info.seleniumcucumber.stepdefinitions"}
+)
+
+public class RunCukeTest {
+}
 ```
 
-This should open a new browser window from where you can access the notebooks.
+Maven/Gradle Dependency
+-----------------------
 
-Outline
+See https://jitpack.io/#selenium-cucumber/selenium-cucumber-java .
+
+License
 -------
 
-You can view the video of the talk [here](https://vimeo.com/73875233).
+(The MIT License)
 
-[1. Pandas
-basics](http://nbviewer.ipython.org/urls/raw.github.com/twiecki/financial-analysis-python-tutorial/master/1.%2520Pandas%2520Basics.ipynb)
-* Creating/Loading time-series data
-* Series and DataFrame: First steps
-* Data alignment
-* Plotting basics
-* Common financial analyses (returns, correlations, ...)
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-[2. Pandas replication of Google Trends
-paper](http://nbviewer.ipython.org/urls/raw.github.com/twiecki/financial-analysis-python-tutorial/master/2.%2520Pandas%2520replication%2520of%2520Google%2520Trends%2520paper.ipynb)
-* Replication of recent paper: [Quantifying Trading Behavior in Financial Markets Using Google Trends](http://www.nature.com/srep/2013/130425/srep01684/pdf/srep01684.pdf)
-* Uses Google search trends to predict market movements
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-[3. Backtesting using
-Zipline](http://nbviewer.ipython.org/urls/raw.github.com/twiecki/financial-analysis-python-tutorial/master/3.%2520Backtesting%2520using%2520Zipline.ipynb)
-* What gets modeled? Why?
-* Stream-based computing
-* My first algorithm
-* Example momentum trade algorithm
-* Example mean-reversion algorithm
-
-[4. Quantopian: Community, Data, Infrastructure, Live Trading](https://www.quantopian.com)
-* Quick intro
-* Example algorithm
-
-Required Packages
------------------
-
-* Python 2.7 (*Python 3 is not supported at this point!*)
-* pandas >= 0.11.1
-* NumPy >= 1.6.1
-* SciPy >= 0.7.0
-* Matplotlib >= 1.0.0
-* Zipline == 0.5.10
-
-The easiest way to install all the necessary packages (except Zipline) is
-to use Continuum Analytics' [Anaconda](http://docs.continuum.io/anaconda/install.html).
-
-Zipline can then be installed via pip:
-```
-pip install zipline
-```
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
